@@ -5,11 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.flatrocktech.repositoryapp.R
-import com.flatrocktech.repositoryapp.databinding.FragmentSearchBinding
 import com.flatrocktech.repositoryapp.databinding.FragmentStarredBinding
+import dagger.hilt.android.AndroidEntryPoint
 
-class SearchFragment : Fragment() {
+@AndroidEntryPoint
+class StarredFragment : Fragment() {
 
     private var _binding: FragmentStarredBinding? = null
     private val binding get() = _binding!!

@@ -1,6 +1,8 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
 }
 
 android {
@@ -39,6 +41,10 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation "androidx.core:core-ktx:$rootProject.ext.coreKtx_version"
 
+    // Coroutines
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-core:$rootProject.ext.coroutines_version"
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-android:$rootProject.ext.coroutines_version"
+
     // UI
     implementation "com.google.android.material:material:$rootProject.ext.material_version"
     implementation "androidx.constraintlayout:constraintlayout:$rootProject.ext.constraint_layout_version"
@@ -53,8 +59,20 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$rootProject.ext.lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$rootProject.ext.lifecycle_version"
 
+    // Hilt
+    implementation "com.google.dagger:hilt-android:$rootProject.ext.hilt_version"
+    kapt "com.google.dagger:hilt-android-compiler:$rootProject.ext.hilt_version"
+    implementation "androidx.hilt:hilt-lifecycle-viewmodel:$rootProject.ext.hilt_lifecycle_version"
+    kapt "androidx.hilt:hilt-compiler:$rootProject.ext.hilt_lifecycle_version"
+
+    // Retrofit
+    api "com.squareup.retrofit2:retrofit:$rootProject.ext.retrofit_version"
+    api "com.squareup.retrofit2:converter-moshi:$rootProject.ext.retrofit_version"
+
+    // Logging
+    api "com.jakewharton.timber:timber:$rootProject.ext.timber_version"
+    api "com.squareup.okhttp3:logging-interceptor:$rootProject.ext.okhttp_version"
+
     // Testing
     testImplementation "junit:junit:$rootProject.ext.junit_version"
-    androidTestImplementation "androidx.test.ext:$rootProject.ext.android_junit_version"
-    androidTestImplementation "androidx.test.espresso:espresso-core:$rootProject.ext.espresso_version"
 }

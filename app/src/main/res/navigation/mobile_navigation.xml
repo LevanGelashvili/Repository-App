@@ -13,7 +13,7 @@
 
     <fragment
         android:id="@+id/navigation_starred"
-        android:name="com.flatrocktech.repositoryapp.presentation.starred.SearchFragment"
+        android:name="com.flatrocktech.repositoryapp.presentation.starred.StarredFragment"
         android:label="@string/title_starred"
         tools:layout="@layout/fragment_starred" />
 </navigation>
