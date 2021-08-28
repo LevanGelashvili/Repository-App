@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import com.bumptech.glide.Glide
 import com.flatrocktech.repositoryapp.clean.domain.model.RepoBriefEntity
-import com.flatrocktech.repositoryapp.clean.presentation.model.DetailsArgs
 import com.flatrocktech.repositoryapp.clean.presentation.search.SearchViewModel.Companion.TAKE_N
 import com.flatrocktech.repositoryapp.databinding.ItemLoadingBinding
 import com.flatrocktech.repositoryapp.databinding.ItemRepoBinding
@@ -21,7 +20,7 @@ class SearchAdapter :
 
     private val repoItems = mutableListOf<SearchListItem.RepoItem>()
 
-    var onRepoItemClicked: ((DetailsArgs) -> Unit)? = null
+    var onRepoItemClicked: ((RepoBriefEntity) -> Unit)? = null
 
     fun addRepoItems(
         list: List<RepoBriefEntity>,
@@ -82,20 +81,15 @@ class SearchAdapter :
     inner class SearchItemViewHolder(private val binding: ViewBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bindRepo(repoBrief: RepoBriefEntity) {
+        fun bindRepo(repo: RepoBriefEntity) {
             binding.root.setOnClickListener {
-                onRepoItemClicked?.invoke(
-                    DetailsArgs(
-                        owner = repoBrief.owner,
-                        repo = repoBrief.repoName
-                    )
-                )
+                onRepoItemClicked?.invoke(repo)
             }
             with(binding as ItemRepoBinding) {
-                textRepo.text = repoBrief.repoName
-                textOwner.text = repoBrief.owner
+                textRepo.text = repo.repoName
+                textOwner.text = repo.owner
                 Glide.with(root)
-                    .load(repoBrief.avatarUrl)
+                    .load(repo.avatarUrl)
                     .into(binding.imageAvatar)
             }
         }

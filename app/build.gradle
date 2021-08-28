@@ -71,6 +71,12 @@ dependencies {
     api "com.squareup.retrofit2:retrofit:$rootProject.ext.retrofit_version"
     api "com.squareup.retrofit2:converter-moshi:$rootProject.ext.retrofit_version"
 
+    // Room
+    api "androidx.room:room-runtime:$rootProject.ext.room_version"
+    annotationProcessor "androidx.room:room-compiler:$rootProject.ext.room_version"
+    api "androidx.room:room-ktx:$rootProject.ext.room_version"
+    kapt "androidx.room:room-compiler:$rootProject.ext.room_version"
+
     // Logging
     api "com.jakewharton.timber:timber:$rootProject.ext.timber_version"
     api "com.squareup.okhttp3:logging-interceptor:$rootProject.ext.okhttp_version"

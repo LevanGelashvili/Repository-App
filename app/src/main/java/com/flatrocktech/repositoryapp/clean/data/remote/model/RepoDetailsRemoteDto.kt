@@ -1,8 +1,8 @@
-package com.flatrocktech.repositoryapp.clean.data.datasource.remote.model
+package com.flatrocktech.repositoryapp.clean.data.remote.model
 
 import com.squareup.moshi.Json
 
-data class RepoDetailsDto(
+data class RepoDetailsRemoteDto(
     @field:Json(name = "created_at")
     val createdAt: String?,
 

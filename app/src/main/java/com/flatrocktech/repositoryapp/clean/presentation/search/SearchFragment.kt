@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.flatrocktech.repositoryapp.clean.presentation.model.DetailsArgs
+import com.flatrocktech.repositoryapp.clean.domain.model.RepoBriefEntity
 import com.flatrocktech.repositoryapp.databinding.FragmentSearchBinding
 import com.flatrocktech.repositoryapp.util.Result
 import com.flatrocktech.repositoryapp.util.ui.recycler.EndlessScrollListener
@@ -70,11 +70,13 @@ class SearchFragment : Fragment() {
         })
     }
 
-    private fun navigateToDetails(params: DetailsArgs) {
+    //TODO: Fix !!s and create base class or smth
+    private fun navigateToDetails(repoBrief: RepoBriefEntity) {
         findNavController().navigate(
             SearchFragmentDirections.actionToDetails(
-                params.owner,
-                params.repo
+                repoBrief.owner!!,
+                repoBrief.repoName!!,
+                repoBrief.avatarUrl!!
             )
         )
     }

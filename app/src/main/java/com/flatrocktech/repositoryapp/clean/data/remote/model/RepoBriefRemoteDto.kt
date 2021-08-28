@@ -1,15 +1,15 @@
-package com.flatrocktech.repositoryapp.clean.data.datasource.remote.model
+package com.flatrocktech.repositoryapp.clean.data.remote.model
 
 import com.squareup.moshi.Json
 
-data class RepoDto(
+data class RepoBriefRemoteDto(
     @field:Json(name = "name")
     val repoName: String,
 
-    val owner: OwnerDto
+    val owner: OwnerRemoteDto
 )
 
-data class OwnerDto(
+data class OwnerRemoteDto(
     @field:Json(name = "login")
     val ownerName: String,
 

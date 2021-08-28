@@ -5,8 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.flatrocktech.repositoryapp.clean.domain.model.RepoBriefEntity
-import com.flatrocktech.repositoryapp.clean.domain.usecase.GetRepoListParams
-import com.flatrocktech.repositoryapp.clean.domain.usecase.GetRepoListUseCase
+import com.flatrocktech.repositoryapp.clean.domain.usecase.FetchRepoBriefListParams
+import com.flatrocktech.repositoryapp.clean.domain.usecase.FetchRepoBriefListUseCase
 import com.flatrocktech.repositoryapp.util.Result
 import com.flatrocktech.repositoryapp.util.ext.handleLoading
 import com.flatrocktech.repositoryapp.util.ui.viewmodel.RequestCodes.RC_INIT
@@ -22,10 +22,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 internal class SearchViewModel @Inject constructor(
-    private val getRepoListUseCase: GetRepoListUseCase
+    private val fetchRepoBriefListUseCase: FetchRepoBriefListUseCase
 ) : ViewModel() {
 
-    private val reposRequestFlow = MutableSharedFlow<GetRepoListParams>(extraBufferCapacity = 1)
+    private val reposRequestFlow = MutableSharedFlow<FetchRepoBriefListParams>(extraBufferCapacity = 1)
     private val _reposLiveData = MutableLiveData<Result<List<RepoBriefEntity>>>()
     val reposLiveData: LiveData<Result<List<RepoBriefEntity>>> get() = _reposLiveData
 
@@ -38,7 +38,7 @@ internal class SearchViewModel @Inject constructor(
         viewModelScope.launch {
             reposRequestFlow
                 .handleLoading(_reposLiveData)
-                .map { getRepoListUseCase(it) }
+                .map { fetchRepoBriefListUseCase(it) }
                 .collect { _reposLiveData.postValue(it) }
         }
     }
@@ -66,7 +66,7 @@ internal class SearchViewModel @Inject constructor(
         page: Int,
     ) {
         reposRequestFlow.tryEmit(
-            GetRepoListParams(
+            FetchRepoBriefListParams(
                 userFilter = filter,
                 page = page,
                 perPage = TAKE_N

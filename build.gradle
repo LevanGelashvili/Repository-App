@@ -32,6 +32,7 @@ ext {
     retrofit_version = "2.6.0"
     okhttp_version = "4.9.1"
     glide_accompanist_version = "0.13.0"
+    room_version = "2.3.0"
 }
 
 allprojects {

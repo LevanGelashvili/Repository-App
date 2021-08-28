@@ -25,6 +25,7 @@ class MainActivity : AppCompatActivity() {
             setOf(
                 R.id.navigation_search,
                 R.id.navigation_starred,
+                R.id.navigation_details
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)

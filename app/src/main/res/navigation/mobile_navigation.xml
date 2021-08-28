@@ -19,7 +19,11 @@
         android:id="@+id/navigation_starred"
         android:name="com.flatrocktech.repositoryapp.clean.presentation.starred.StarredFragment"
         android:label="@string/title_starred"
-        tools:layout="@layout/fragment_starred" />
+        tools:layout="@layout/fragment_starred">
+        <action
+            android:id="@+id/action_to_details"
+            app:destination="@id/navigation_details" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_details"
@@ -28,9 +32,12 @@
         tools:layout="@layout/fragment_details">
         <argument
             android:name="owner"
-            app:argType="string"/>
+            app:argType="string" />
         <argument
             android:name="repoName"
-            app:argType="string"/>
+            app:argType="string" />
+        <argument
+            android:name="avatarUrl"
+            app:argType="string" />
     </fragment>
 </navigation>

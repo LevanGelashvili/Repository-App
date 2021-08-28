@@ -8,19 +8,21 @@ import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import java.io.IOException
 
-suspend fun <T> safeApiCall(dispatcher: CoroutineDispatcher, apiCall: suspend () -> T): Result<T> {
+suspend fun <T> safeApiCall(
+    dispatcher: CoroutineDispatcher,
+    apiCall: suspend () -> T
+): Result<T> {
     return withContext(dispatcher) {
         try {
             Result.Success(apiCall.invoke())
         } catch (throwable: Throwable) {
             when (throwable) {
-                is IOException -> Result.Error()
                 is HttpException -> {
                     val errorResponse = convertErrorBody(throwable)
-                    Result.Error(errorResponse)
+                    Result.Error(errorResponse, throwable)
                 }
                 else -> {
-                    Result.Error(null)
+                    Result.Error(exception = throwable)
                 }
             }
         }

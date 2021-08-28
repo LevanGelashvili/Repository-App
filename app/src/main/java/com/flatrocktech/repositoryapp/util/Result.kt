@@ -9,14 +9,17 @@ sealed class Result<out T> {
         var requestCode: RequestCode? = null
     ) : Result<T>()
 
-    data class Error(val errorResponse: ErrorResponse? = null) : Result<Nothing>()
+    data class Error(
+        val errorResponse: ErrorResponse? = null,
+        val exception: Throwable? = null
+    ) : Result<Nothing>()
 
     object Loading : Result<Nothing>()
 
     override fun toString(): String {
         return when (this) {
             is Success<*> -> "Success[data=$data]"
-            is Error -> "Error[errorResponse=$errorResponse]"
+            is Error -> "Error[errorResponse=$errorResponse, exception=$exception]"
             Loading -> "Loading"
         }
     }
