@@ -7,13 +7,13 @@
 
     <fragment
         android:id="@+id/navigation_search"
-        android:name="com.flatrocktech.repositoryapp.presentation.search.SearchFragment"
+        android:name="com.flatrocktech.repositoryapp.clean.presentation.search.SearchFragment"
         android:label="@string/title_search"
         tools:layout="@layout/fragment_search" />
 
     <fragment
         android:id="@+id/navigation_starred"
-        android:name="com.flatrocktech.repositoryapp.presentation.starred.StarredFragment"
+        android:name="com.flatrocktech.repositoryapp.clean.presentation.starred.StarredFragment"
         android:label="@string/title_starred"
         tools:layout="@layout/fragment_starred" />
 </navigation>

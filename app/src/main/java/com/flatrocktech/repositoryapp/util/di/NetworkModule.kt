@@ -2,6 +2,7 @@ package com.flatrocktech.repositoryapp.util.di
 
 import androidx.annotation.Nullable
 import com.flatrocktech.repositoryapp.BuildConfig
+import com.flatrocktech.repositoryapp.util.network.RequestInterceptor
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,12 +20,12 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 internal object NetworkModule {
 
-    private const val SERVER_URL = "https://europe-west3-komar-app.cloudfunctions.net/api/"
+    private const val SERVER_URL = "https://api.github.com/"
 
-//    @Singleton
-//    @Provides
-//    @OkHttpRequestInterceptor
-//    fun provideRequestInterceptor(): Interceptor = RequestInterceptor()
+    @Singleton
+    @Provides
+    @OkHttpRequestInterceptor
+    fun provideRequestInterceptor(): Interceptor = RequestInterceptor()
 
     @Singleton
     @Provides

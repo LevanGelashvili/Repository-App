@@ -1,18 +1,17 @@
-package com.flatrocktech.repositoryapp.presentation.search
+package com.flatrocktech.repositoryapp.clean.presentation.starred
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.flatrocktech.repositoryapp.R
-import com.flatrocktech.repositoryapp.databinding.FragmentSearchBinding
+import com.flatrocktech.repositoryapp.databinding.FragmentStarredBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class SearchFragment : Fragment() {
+class StarredFragment : Fragment() {
 
-    private var _binding: FragmentSearchBinding? = null
+    private var _binding: FragmentStarredBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -20,7 +19,7 @@ class SearchFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentSearchBinding.inflate(inflater, container, false)
+        _binding = FragmentStarredBinding.inflate(inflater, container, false)
         return binding.root
     }
 

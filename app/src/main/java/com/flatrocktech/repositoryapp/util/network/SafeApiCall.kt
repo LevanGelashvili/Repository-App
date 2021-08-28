@@ -14,13 +14,13 @@ suspend fun <T> safeApiCall(dispatcher: CoroutineDispatcher, apiCall: suspend ()
             Result.Success(apiCall.invoke())
         } catch (throwable: Throwable) {
             when (throwable) {
-                is IOException -> Result.Error.NetworkError
+                is IOException -> Result.Error()
                 is HttpException -> {
                     val errorResponse = convertErrorBody(throwable)
-                    Result.Error.GenericError(errorResponse)
+                    Result.Error(errorResponse)
                 }
                 else -> {
-                    Result.Error.GenericError(null)
+                    Result.Error(null)
                 }
             }
         }

@@ -1,21 +1,22 @@
 package com.flatrocktech.repositoryapp.util
 
+import com.flatrocktech.repositoryapp.util.ui.viewmodel.RequestCode
+
 sealed class Result<out T> {
 
-    data class Success<out T>(val data: T) : Result<T>()
+    data class Success<out T>(
+        val data: T,
+        var requestCode: RequestCode? = null
+    ) : Result<T>()
 
-    sealed class Error : Result<Nothing>() {
-        object NetworkError : Error()
-        data class GenericError(val errorResponse: ErrorResponse? = null) : Error()
-    }
+    data class Error(val errorResponse: ErrorResponse? = null) : Result<Nothing>()
 
     object Loading : Result<Nothing>()
 
     override fun toString(): String {
         return when (this) {
             is Success<*> -> "Success[data=$data]"
-            is Error.NetworkError -> "NetworkError"
-            is Error.GenericError -> "Error[errorResponse=$errorResponse]"
+            is Error -> "Error[errorResponse=$errorResponse]"
             Loading -> "Loading"
         }
     }
@@ -26,14 +27,13 @@ data class ErrorResponse(
     val message: String? = null
 )
 
-/**
- * `true` if [Result] is of type [Success] & holds non-null [Success.data].
- */
-val Result<*>.succeeded
-    get() = this is Result.Success && data != null
-
-fun <T> Result<T>.successOr(fallback: T): T {
-    return (this as? Result.Success<T>)?.data ?: fallback
+fun <T> Result<T>.setRequestCode(newRequestCode: RequestCode?): Result<T> {
+    return when (this) {
+        is Result.Success -> this.apply {
+            requestCode = newRequestCode
+        }
+        else -> this
+    }
 }
 
 val <T> Result<T>.data: T?

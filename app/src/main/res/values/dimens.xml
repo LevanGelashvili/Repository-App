@@ -1,2 +1,13 @@
 <resources>
+    <dimen name="spacing_3xs">2dp</dimen>
+    <dimen name="spacing_2xs">4dp</dimen>
+    <dimen name="spacing_xs">8dp</dimen>
+    <dimen name="spacing_s">12dp</dimen>
+    <dimen name="spacing_m">16dp</dimen>
+    <dimen name="spacing_l">20dp</dimen>
+    <dimen name="spacing_xl">24dp</dimen>
+    <dimen name="spacing_2xl">28dp</dimen>
+    <dimen name="spacing_3xl">32dp</dimen>
+    <dimen name="spacing_4xl">48dp</dimen>
+    <dimen name="spacing_5xl">64dp</dimen>
 </resources>
