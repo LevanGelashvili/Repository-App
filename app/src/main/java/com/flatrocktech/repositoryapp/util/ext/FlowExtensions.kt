@@ -2,7 +2,6 @@ package com.flatrocktech.repositoryapp.util.ext
 
 import androidx.lifecycle.MutableLiveData
 import com.flatrocktech.repositoryapp.util.Result
-import com.flatrocktech.repositoryapp.util.ui.viewmodel.RequestCode
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.onEach
 

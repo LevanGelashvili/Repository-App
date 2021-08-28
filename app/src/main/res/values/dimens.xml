@@ -10,4 +10,7 @@
     <dimen name="spacing_3xl">32dp</dimen>
     <dimen name="spacing_4xl">48dp</dimen>
     <dimen name="spacing_5xl">64dp</dimen>
+
+    <dimen name="item_repo_height">70dp</dimen>
+    <dimen name="item_repo_avatar_size">40dp</dimen>
 </resources>

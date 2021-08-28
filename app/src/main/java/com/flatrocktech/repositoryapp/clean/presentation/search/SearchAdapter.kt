@@ -5,7 +5,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
-import com.flatrocktech.repositoryapp.clean.domain.model.entity.RepoEntity
+import com.bumptech.glide.Glide
+import com.flatrocktech.repositoryapp.clean.domain.model.RepoBriefEntity
+import com.flatrocktech.repositoryapp.clean.presentation.model.DetailsArgs
 import com.flatrocktech.repositoryapp.clean.presentation.search.SearchViewModel.Companion.TAKE_N
 import com.flatrocktech.repositoryapp.databinding.ItemLoadingBinding
 import com.flatrocktech.repositoryapp.databinding.ItemRepoBinding
@@ -19,8 +21,10 @@ class SearchAdapter :
 
     private val repoItems = mutableListOf<SearchListItem.RepoItem>()
 
+    var onRepoItemClicked: ((DetailsArgs) -> Unit)? = null
+
     fun addRepoItems(
-        list: List<RepoEntity>,
+        list: List<RepoBriefEntity>,
         clearPrevious: Boolean = false
     ) {
         val listToDisplay = mutableListOf<SearchListItem>()
@@ -70,7 +74,7 @@ class SearchAdapter :
 
     override fun onBindViewHolder(holder: SearchItemViewHolder, position: Int) {
         when (val item = getItem(position)) {
-            is SearchListItem.RepoItem -> holder.bindRepo(item.repo)
+            is SearchListItem.RepoItem -> holder.bindRepo(item.repoBrief)
             SearchListItem.Loader -> holder.bindLoader()
         }
     }
@@ -78,9 +82,21 @@ class SearchAdapter :
     inner class SearchItemViewHolder(private val binding: ViewBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bindRepo(repo: RepoEntity) {
+        fun bindRepo(repoBrief: RepoBriefEntity) {
+            binding.root.setOnClickListener {
+                onRepoItemClicked?.invoke(
+                    DetailsArgs(
+                        owner = repoBrief.owner,
+                        repo = repoBrief.repoName
+                    )
+                )
+            }
             with(binding as ItemRepoBinding) {
-                textRepo.text = repo.title
+                textRepo.text = repoBrief.repoName
+                textOwner.text = repoBrief.owner
+                Glide.with(root)
+                    .load(repoBrief.avatarUrl)
+                    .into(binding.imageAvatar)
             }
         }
 
@@ -90,7 +106,7 @@ class SearchAdapter :
     }
 
     sealed class SearchListItem {
-        data class RepoItem(val repo: RepoEntity) : SearchListItem()
+        data class RepoItem(val repoBrief: RepoBriefEntity) : SearchListItem()
         object Loader : SearchListItem()
     }
 

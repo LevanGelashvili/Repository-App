@@ -3,6 +3,7 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
+    id 'androidx.navigation.safeargs'
 }
 
 android {
@@ -50,10 +51,11 @@ dependencies {
     implementation "androidx.vectordrawable:vectordrawable:$rootProject.ext.vector_drawable_version"
     implementation "androidx.appcompat:appcompat:$rootProject.ext.appcompat_version"
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:$rootProject.ext.swipe_refresh_layout_version"
+    implementation "com.google.accompanist:accompanist-glide:$rootProject.ext.glide_accompanist_version"
 
     // Navigation
-    implementation "androidx.navigation:navigation-fragment-ktx:$rootProject.ext.nav_version"
-    implementation "androidx.navigation:navigation-ui-ktx:$rootProject.ext.nav_version"
+    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
 
     // Lifecycle
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$rootProject.ext.lifecycle_version"

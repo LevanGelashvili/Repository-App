@@ -3,4 +3,5 @@
 
     <string name="title_search">Search</string>
     <string name="title_starred">Starred</string>
+    <string name="title_details">Details</string>
 </resources>

@@ -1,9 +1,11 @@
 package com.flatrocktech.repositoryapp.clean.data.repository
 
 import com.flatrocktech.repositoryapp.clean.data.datasource.remote.ReposRemoteDataSource
-import com.flatrocktech.repositoryapp.clean.domain.model.entity.RepoEntity
-import com.flatrocktech.repositoryapp.clean.domain.model.params.GetReposParams
+import com.flatrocktech.repositoryapp.clean.domain.model.RepoBriefEntity
+import com.flatrocktech.repositoryapp.clean.domain.model.RepoDetailsEntity
 import com.flatrocktech.repositoryapp.clean.domain.repository.ReposRepository
+import com.flatrocktech.repositoryapp.clean.domain.usecase.GetRepoDetailsParams
+import com.flatrocktech.repositoryapp.clean.domain.usecase.GetRepoListParams
 import com.flatrocktech.repositoryapp.util.Result
 import com.flatrocktech.repositoryapp.util.di.CoroutinesModule.IoDispatcher
 import com.flatrocktech.repositoryapp.util.network.safeApiCall
@@ -15,11 +17,27 @@ class ReposRepositoryImpl @Inject constructor(
     @IoDispatcher private val dispatcher: CoroutineDispatcher
 ) : ReposRepository {
 
-    override suspend fun getRepos(params: GetReposParams): Result<List<RepoEntity>> {
+    override suspend fun getRepoBriefList(params: GetRepoListParams): Result<List<RepoBriefEntity>> {
         return safeApiCall(dispatcher) {
-            remoteDataSource.getRepos(params).map {
-                RepoEntity(it.repoName)
+            remoteDataSource.getRepoBriefList(params).map { repoDto ->
+                RepoBriefEntity(
+                    repoName = repoDto.repoName,
+                    owner = repoDto.owner.ownerName,
+                    avatarUrl = repoDto.owner.avatarUrl
+                )
             }
+        }
+    }
+
+    override suspend fun getRepoDetails(params: GetRepoDetailsParams): Result<RepoDetailsEntity> {
+        return safeApiCall(dispatcher) {
+            val repoDetailsDto = remoteDataSource.getRepoDetails(params)
+            RepoDetailsEntity(
+                createdAt = repoDetailsDto.createdAt,
+                description = repoDetailsDto.description,
+                languageUsed = repoDetailsDto.languageUsed,
+                url = repoDetailsDto.url
+            )
         }
     }
 }

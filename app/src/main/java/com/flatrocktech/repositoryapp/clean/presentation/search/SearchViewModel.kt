@@ -4,12 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.flatrocktech.repositoryapp.clean.domain.model.entity.RepoEntity
-import com.flatrocktech.repositoryapp.clean.domain.model.params.GetReposParams
-import com.flatrocktech.repositoryapp.clean.domain.usecase.GetReposUseCase
+import com.flatrocktech.repositoryapp.clean.domain.model.RepoBriefEntity
+import com.flatrocktech.repositoryapp.clean.domain.usecase.GetRepoListParams
+import com.flatrocktech.repositoryapp.clean.domain.usecase.GetRepoListUseCase
 import com.flatrocktech.repositoryapp.util.Result
 import com.flatrocktech.repositoryapp.util.ext.handleLoading
-import com.flatrocktech.repositoryapp.util.setRequestCode
 import com.flatrocktech.repositoryapp.util.ui.viewmodel.RequestCodes.RC_INIT
 import com.flatrocktech.repositoryapp.util.ui.viewmodel.RequestCodes.RC_LOAD_MORE
 import com.flatrocktech.repositoryapp.util.ui.viewmodel.RequestCodes.RC_SEARCH
@@ -23,12 +22,12 @@ import javax.inject.Inject
 
 @HiltViewModel
 internal class SearchViewModel @Inject constructor(
-    private val getReposUseCase: GetReposUseCase
+    private val getRepoListUseCase: GetRepoListUseCase
 ) : ViewModel() {
 
-    private val reposRequestFlow = MutableSharedFlow<GetReposParams>(extraBufferCapacity = 1)
-    private val _reposLiveData = MutableLiveData<Result<List<RepoEntity>>>()
-    val reposLiveData: LiveData<Result<List<RepoEntity>>> get() = _reposLiveData
+    private val reposRequestFlow = MutableSharedFlow<GetRepoListParams>(extraBufferCapacity = 1)
+    private val _reposLiveData = MutableLiveData<Result<List<RepoBriefEntity>>>()
+    val reposLiveData: LiveData<Result<List<RepoBriefEntity>>> get() = _reposLiveData
 
     private var currentPage = STARTING_PAGE
 
@@ -39,12 +38,8 @@ internal class SearchViewModel @Inject constructor(
         viewModelScope.launch {
             reposRequestFlow
                 .handleLoading(_reposLiveData)
-                .map {
-                    getReposUseCase(it)
-                }
-                .collect {
-                    _reposLiveData.postValue(it.setRequestCode(lastRequestCode))
-                }
+                .map { getRepoListUseCase(it) }
+                .collect { _reposLiveData.postValue(it) }
         }
     }
 
@@ -71,7 +66,7 @@ internal class SearchViewModel @Inject constructor(
         page: Int,
     ) {
         reposRequestFlow.tryEmit(
-            GetReposParams(
+            GetRepoListParams(
                 userFilter = filter,
                 page = page,
                 perPage = TAKE_N

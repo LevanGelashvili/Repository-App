@@ -2,6 +2,7 @@ buildscript {
     ext.kotlin_version = "1.4.32"
     ext.gradle_version = "7.0.0-beta04"
     ext.hilt_gradle_version = "2.28.3-alpha"
+    ext.nav_version = "2.3.5"
     repositories {
         google()
         mavenCentral()
@@ -10,6 +11,7 @@ buildscript {
         classpath "com.android.tools.build:gradle:$gradle_version"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_gradle_version"
+        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$nav_version"
     }
 }
 
@@ -27,9 +29,9 @@ ext {
     hilt_version = "2.35"
     hilt_lifecycle_version = "1.0.0-alpha03"
     timber_version = "4.7.1"
-    nav_version = "2.3.5"
     retrofit_version = "2.6.0"
     okhttp_version = "4.9.1"
+    glide_accompanist_version = "0.13.0"
 }
 
 allprojects {
