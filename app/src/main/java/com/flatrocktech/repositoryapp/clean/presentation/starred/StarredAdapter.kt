@@ -40,6 +40,7 @@ class StarredAdapter :
                 textOwner.text = repo.owner
                 Glide.with(root)
                     .load(repo.avatarUrl)
+                    .circleCrop()
                     .into(binding.imageAvatar)
             }
         }

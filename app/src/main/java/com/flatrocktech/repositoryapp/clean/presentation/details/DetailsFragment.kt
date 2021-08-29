@@ -1,5 +1,6 @@
 package com.flatrocktech.repositoryapp.clean.presentation.details
 
+import android.content.Context
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
@@ -12,6 +13,8 @@ import com.flatrocktech.repositoryapp.databinding.FragmentDetailsBinding
 import com.flatrocktech.repositoryapp.util.Result
 import com.flatrocktech.repositoryapp.util.ext.displayToast
 import com.flatrocktech.repositoryapp.util.helper.BrowserHelper
+import com.flatrocktech.repositoryapp.util.helper.DateHelper
+import com.flatrocktech.repositoryapp.util.ui.recycler.CustomItemDecoration
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -54,18 +57,22 @@ class DetailsFragment : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (menuStateManager.starState) {
-            StarState.STARRED -> {
-                viewModel.unstarRepo(repoName = args.repoName, owner = args.owner)
-            }
-            StarState.NOT_STARRED -> {
-                viewModel.starRepo(
-                    RepoBriefEntity(
-                        owner = args.owner,
-                        repoName = args.repoName,
-                        avatarUrl = args.avatarUrl
+        if (item.itemId == android.R.id.home) {
+            requireActivity().onBackPressed()
+        } else {
+            when (menuStateManager.starState) {
+                StarState.STARRED -> {
+                    viewModel.unstarRepo(repoName = args.repoName, owner = args.owner)
+                }
+                StarState.NOT_STARRED -> {
+                    viewModel.starRepo(
+                        RepoBriefEntity(
+                            owner = args.owner,
+                            repoName = args.repoName,
+                            avatarUrl = args.avatarUrl
+                        )
                     )
-                )
+                }
             }
         }
         return true
@@ -90,8 +97,8 @@ class DetailsFragment : Fragment() {
             when (it) {
                 is Result.Success -> {
                     detailsAdapter.submitList(it.data.toDetailsRowModelList())
-                    binding.textOwner.text = args.owner
                     binding.textRepo.text = args.repoName
+                    binding.textOwner.text = getString(R.string.title_details_owner, args.owner)
                     it.data.url?.let { url ->
                         binding.buttonShare.isEnabled = true
                         binding.buttonShare.setOnClickListener {
@@ -154,9 +161,13 @@ class DetailsFragment : Fragment() {
 
     private fun RepoDetailsEntity.toDetailsRowModelList(): MutableList<DetailsRowModel> {
         return mutableListOf(
-            DetailsRowModel(R.string.title_details_description, this.description),
-            DetailsRowModel(R.string.title_details_created_at, this.createdAt),
-            DetailsRowModel(R.string.title_details_language_used, this.languageUsed)
+            DetailsRowModel(R.string.title_details_description, description),
+            DetailsRowModel(R.string.title_details_created_at, DateHelper.formatDate(createdAt)),
+            DetailsRowModel(R.string.title_details_language_used, languageUsed),
+            DetailsRowModel(
+                R.string.title_details_subscriber_count,
+                (subscriberCount ?: 0).toString()
+            )
         )
     }
 }

@@ -1,6 +1,7 @@
 package com.flatrocktech.repositoryapp
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -20,15 +21,33 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        supportActionBar?.setDisplayHomeAsUpEnabled(true);
+
         val navController = findNavController(R.id.nav_host_fragment)
         val appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.navigation_search,
-                R.id.navigation_starred,
-                R.id.navigation_details
+                R.id.navigation_starred
             )
         )
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.navigation_search -> showBottomNav()
+                R.id.navigation_starred -> showBottomNav()
+                R.id.navigation_details -> hideBottomNav()
+            }
+        }
+
         setupActionBarWithNavController(navController, appBarConfiguration)
         binding.bottomNavView.setupWithNavController(navController)
+    }
+
+    private fun showBottomNav() {
+        binding.bottomNavView.visibility = View.VISIBLE
+    }
+
+    private fun hideBottomNav() {
+        binding.bottomNavView.visibility = View.GONE
     }
 }

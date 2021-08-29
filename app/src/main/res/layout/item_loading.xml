@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="58dp"
+    android:layout_height="@dimen/item_loader_height"
     android:gravity="center_vertical">
 
     <ProgressBar
         style="?android:attr/progressBarStyleLarge"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
+        android:progressTint="?attr/colorSecondary"
+        android:layout_width="@dimen/item_loader_progress_size"
+        android:layout_height="@dimen/item_loader_progress_size"
         android:layout_gravity="center"
         android:indeterminate="true" />
 

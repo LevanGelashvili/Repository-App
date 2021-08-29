@@ -12,6 +12,9 @@ data class RepoDetailsRemoteDto(
     @field:Json(name = "language")
     val languageUsed: String?,
 
-    @field:Json(name = "svn_url")
-    val url: String?
+    @field:Json(name = "html_url")
+    val url: String?,
+
+    @field:Json(name = "subscribers_count")
+    val subscriberCount: Int?
 )

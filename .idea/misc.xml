@@ -9,13 +9,16 @@
         <entry key="..\:/Users/Levangelashvili/Desktop/Repository App/app/src/main/res/drawable/ic_home_black_24dp.xml" value="0.14814814814814814" />
         <entry key="..\:/Users/Levangelashvili/Desktop/Repository App/app/src/main/res/drawable/ic_launcher_background.xml" value="0.14814814814814814" />
         <entry key="..\:/Users/Levangelashvili/Desktop/Repository App/app/src/main/res/drawable/ic_notifications_black_24dp.xml" value="0.14814814814814814" />
+        <entry key="..\:/Users/Levangelashvili/Desktop/Repository App/app/src/main/res/drawable/ic_search_24.xml" value="0.14814814814814814" />
+        <entry key="..\:/Users/Levangelashvili/Desktop/Repository App/app/src/main/res/drawable/ic_star_filled_24.xml" value="0.14814814814814814" />
+        <entry key="..\:/Users/Levangelashvili/Desktop/Repository App/app/src/main/res/drawable/ic_star_outline_24.xml" value="0.14814814814814814" />
         <entry key="..\:/Users/Levangelashvili/Desktop/Repository App/app/src/main/res/drawable/selector_menu_star.xml" value="0.14814814814814814" />
         <entry key="..\:/Users/Levangelashvili/Desktop/Repository App/app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="..\:/Users/Levangelashvili/Desktop/Repository App/app/src/main/res/layout/fragment_details.xml" value="0.31666666666666665" />
         <entry key="..\:/Users/Levangelashvili/Desktop/Repository App/app/src/main/res/layout/fragment_search.xml" value="0.16077898550724637" />
         <entry key="..\:/Users/Levangelashvili/Desktop/Repository App/app/src/main/res/layout/fragment_starred.xml" value="0.11911231884057971" />
         <entry key="..\:/Users/Levangelashvili/Desktop/Repository App/app/src/main/res/layout/item_details.xml" value="0.5" />
-        <entry key="..\:/Users/Levangelashvili/Desktop/Repository App/app/src/main/res/layout/item_loading.xml" value="0.11911231884057971" />
+        <entry key="..\:/Users/Levangelashvili/Desktop/Repository App/app/src/main/res/layout/item_loading.xml" value="0.22" />
         <entry key="..\:/Users/Levangelashvili/Desktop/Repository App/app/src/main/res/layout/item_repo.xml" value="0.3333333333333333" />
         <entry key="..\:/Users/Levangelashvili/Desktop/Repository App/app/src/main/res/menu/bottom_nav_menu.xml" value="0.1796875" />
         <entry key="..\:/Users/Levangelashvili/Desktop/Repository App/app/src/main/res/menu/details_top_menu.xml" value="0.1796875" />

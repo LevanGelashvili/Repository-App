@@ -1,13 +1,19 @@
 <resources>
     <string name="app_name">Repository App</string>
 
-    <string name="title_search">Search</string>
-    <string name="title_starred">Starred</string>
-    <string name="title_details">Details</string>
+    <string name="title_search">Search Repositories</string>
+    <string name="title_starred">Starred Repositories</string>
+    <string name="title_details">Repository Details</string>
 
+    <string name="nav_search">Search</string>
+    <string name="nav_starred">Starred</string>
+
+    <string name="title_details_owner">Owner: %s</string>
     <string name="title_details_description">Description</string>
     <string name="title_details_created_at">Created at</string>
     <string name="title_details_language_used">Language used</string>
+    <string name="title_details_subscriber_count">Subscriber count</string>
 
     <string name="button_share_url">Open in browser</string>
+    <string name="hint_search">Search</string>
 </resources>
