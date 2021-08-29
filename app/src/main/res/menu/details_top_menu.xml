@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/menu_action_star"
-        android:icon="@drawable/ic_dashboard_black_24dp"
+        android:id="@+id/menu_star_item"
         android:title="@string/title_details"
         app:showAsAction="ifRoom" />
 

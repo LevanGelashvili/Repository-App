@@ -8,10 +8,10 @@ import androidx.navigation.fragment.navArgs
 import com.flatrocktech.repositoryapp.R
 import com.flatrocktech.repositoryapp.clean.domain.model.RepoBriefEntity
 import com.flatrocktech.repositoryapp.clean.domain.model.RepoDetailsEntity
-import com.flatrocktech.repositoryapp.clean.domain.usecase.remote.FetchRepoDetailsParams
 import com.flatrocktech.repositoryapp.databinding.FragmentDetailsBinding
 import com.flatrocktech.repositoryapp.util.Result
 import com.flatrocktech.repositoryapp.util.ext.displayToast
+import com.flatrocktech.repositoryapp.util.helper.BrowserHelper
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -25,6 +25,8 @@ class DetailsFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val detailsAdapter by lazy { DetailsAdapter() }
+
+    private lateinit var menuStateManager: DetailsMenuStateManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,11 +50,15 @@ class DetailsFragment : Fragment() {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.details_top_menu, menu)
+        menuStateManager = DetailsMenuStateManager(requireContext(), menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.menu_action_star -> {
+        when (menuStateManager.starState) {
+            StarState.STARRED -> {
+                viewModel.unstarRepo(repoName = args.repoName, owner = args.owner)
+            }
+            StarState.NOT_STARRED -> {
                 viewModel.starRepo(
                     RepoBriefEntity(
                         owner = args.owner,
@@ -60,10 +66,9 @@ class DetailsFragment : Fragment() {
                         avatarUrl = args.avatarUrl
                     )
                 )
-                true
             }
-            else -> super.onOptionsItemSelected(item)
         }
+        return true
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -72,7 +77,8 @@ class DetailsFragment : Fragment() {
         binding.recyclerView.adapter = detailsAdapter
 
         viewModel.checkIsRepoStarred(
-            repoName = args.repoName
+            repoName = args.repoName,
+            owner = args.owner
         )
 
         viewModel.fetchRepoDetails(
@@ -84,6 +90,14 @@ class DetailsFragment : Fragment() {
             when (it) {
                 is Result.Success -> {
                     detailsAdapter.submitList(it.data.toDetailsRowModelList())
+                    binding.textOwner.text = args.owner
+                    binding.textRepo.text = args.repoName
+                    it.data.url?.let { url ->
+                        binding.buttonShare.isEnabled = true
+                        binding.buttonShare.setOnClickListener {
+                            BrowserHelper.openUrl(requireContext(), url)
+                        }
+                    }
                 }
                 is Result.Error -> {
 
@@ -94,13 +108,18 @@ class DetailsFragment : Fragment() {
             }
         })
 
-        viewModel.isRepoStarredLiveData.observe(viewLifecycleOwner, {
-            when (it) {
+        viewModel.isRepoStarredLiveData.observe(viewLifecycleOwner, { isStarred ->
+            when (isStarred) {
                 is Result.Success -> {
-                    if (it.data) displayToast("Repo is starred!")
-                    else displayToast("Repo is not starred!")
+                    if (isStarred.data) {
+                        menuStateManager.starState = StarState.STARRED
+                    } else {
+                        menuStateManager.starState = StarState.NOT_STARRED
+                    }
                 }
-                is Result.Error -> displayToast("Unable to check if repo is starred")
+                is Result.Error -> {
+                    displayToast("Unable to check if repo is starred")
+                }
                 Result.Loading -> {
                 }
             }
@@ -108,8 +127,12 @@ class DetailsFragment : Fragment() {
 
         viewModel.starRepoStatusLiveData.observe(viewLifecycleOwner, {
             when (it) {
-                is Result.Success -> displayToast("Added to favorites!")
-                is Result.Error -> displayToast("Unable to add to favorites")
+                is Result.Success -> {
+                    menuStateManager.starState = StarState.STARRED
+                }
+                is Result.Error -> {
+                    displayToast("Unable to add to favorites")
+                }
                 Result.Loading -> {
                 }
             }
@@ -117,8 +140,12 @@ class DetailsFragment : Fragment() {
 
         viewModel.unstarRepoStatusLiveData.observe(viewLifecycleOwner, {
             when (it) {
-                is Result.Success -> displayToast("Removed from favorites!")
-                is Result.Error -> displayToast("Unable to remove from favorites")
+                is Result.Success -> {
+                    menuStateManager.starState = StarState.NOT_STARRED
+                }
+                is Result.Error -> {
+                    displayToast("Unable to remove from favorites")
+                }
                 Result.Loading -> {
                 }
             }

@@ -5,7 +5,8 @@ import com.flatrocktech.repositoryapp.util.Result
 import javax.inject.Inject
 
 data class IsRepoStarredParams(
-    val repoName: String
+    val repoName: String,
+    val ownerName: String
 )
 
 class IsRepoStarredUseCase @Inject constructor(

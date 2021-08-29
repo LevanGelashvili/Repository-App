@@ -26,11 +26,13 @@ internal class DetailsViewModel @Inject constructor(
     private val deleteRepoBriefUseCase: DeleteRepoBriefUseCase
 ) : ViewModel() {
 
-    private val repoDetailsRequestFlow = MutableSharedFlow<FetchRepoDetailsParams>(extraBufferCapacity = 1)
+    private val repoDetailsRequestFlow =
+        MutableSharedFlow<FetchRepoDetailsParams>(extraBufferCapacity = 1)
     private val _repoDetailsLiveData = MutableLiveData<Result<RepoDetailsEntity>>()
     val repoDetailsLiveData: LiveData<Result<RepoDetailsEntity>> get() = _repoDetailsLiveData
 
-    private val isRepoStarredRequestFlow = MutableSharedFlow<IsRepoStarredParams>(extraBufferCapacity = 1)
+    private val isRepoStarredRequestFlow =
+        MutableSharedFlow<IsRepoStarredParams>(extraBufferCapacity = 1)
     private val _isRepoStarredLiveData = MutableLiveData<Result<Boolean>>()
     val isRepoStarredLiveData: LiveData<Result<Boolean>> get() = _isRepoStarredLiveData
 
@@ -38,7 +40,8 @@ internal class DetailsViewModel @Inject constructor(
     private val _starRepoStatusLiveData = MutableLiveData<Result<Unit>>()
     val starRepoStatusLiveData: LiveData<Result<Unit>> get() = _starRepoStatusLiveData
 
-    private val unstarRepoRequestFlow = MutableSharedFlow<DeleteRepoBriefParams>(extraBufferCapacity = 1)
+    private val unstarRepoRequestFlow =
+        MutableSharedFlow<DeleteRepoBriefParams>(extraBufferCapacity = 1)
     private val _unstarRepoStatusLiveData = MutableLiveData<Result<Unit>>()
     val unstarRepoStatusLiveData: LiveData<Result<Unit>> get() = _unstarRepoStatusLiveData
 
@@ -71,16 +74,13 @@ internal class DetailsViewModel @Inject constructor(
 
     fun fetchRepoDetails(repoName: String, owner: String) {
         repoDetailsRequestFlow.tryEmit(
-            FetchRepoDetailsParams(
-                repoName = repoName,
-                owner = owner
-            )
+            FetchRepoDetailsParams(repoName = repoName, owner = owner)
         )
     }
 
-    fun checkIsRepoStarred(repoName: String) {
+    fun checkIsRepoStarred(repoName: String, owner: String) {
         isRepoStarredRequestFlow.tryEmit(
-            IsRepoStarredParams(repoName = repoName)
+            IsRepoStarredParams(repoName = repoName, ownerName = owner)
         )
     }
 
@@ -88,9 +88,9 @@ internal class DetailsViewModel @Inject constructor(
         starRepoRequestFlow.tryEmit(repoBrief)
     }
 
-    fun unstarRepo(repoName: String) {
+    fun unstarRepo(repoName: String, owner: String) {
         unstarRepoRequestFlow.tryEmit(
-            DeleteRepoBriefParams(repoName = repoName)
+            DeleteRepoBriefParams(repoName = repoName, owner = owner)
         )
     }
 }

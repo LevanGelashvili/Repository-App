@@ -38,7 +38,7 @@ class LocalRepoRepositoryImpl @Inject constructor(
 
     override suspend fun deleteBriefRepo(params: DeleteRepoBriefParams): Result<Unit> {
         return safeStorageCall(dispatcher) {
-            dao.deleteRepo(repoName = params.repoName)
+            dao.deleteRepo(repoName = params.repoName, owner = params.owner)
         }
     }
 }

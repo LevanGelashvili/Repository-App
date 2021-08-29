@@ -5,7 +5,8 @@ import com.flatrocktech.repositoryapp.util.Result
 import javax.inject.Inject
 
 data class DeleteRepoBriefParams(
-    val repoName: String
+    val repoName: String,
+    val owner: String
 )
 
 class DeleteRepoBriefUseCase @Inject constructor(

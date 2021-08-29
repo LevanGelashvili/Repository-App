@@ -6,8 +6,8 @@ import com.flatrocktech.repositoryapp.util.Result
 import javax.inject.Inject
 
 data class FetchRepoDetailsParams(
-    val owner: String,
-    val repoName: String
+    val repoName: String,
+    val owner: String
 )
 
 class FetchRepoDetailsUseCase @Inject constructor(

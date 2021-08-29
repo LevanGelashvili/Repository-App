@@ -13,12 +13,12 @@ interface RepoDao {
     @Query("SELECT * FROM $REPOS_TABLE")
     fun getBriefRepoList(): List<RepoBriefLocalDto>
 
-    @Query("SELECT EXISTS (SELECT * FROM $REPOS_TABLE WHERE repo_name =:repoName)")
+    @Query("SELECT EXISTS (SELECT * FROM $REPOS_TABLE WHERE repo_name = :repoName)")
     fun checkIfRepoExists(repoName: String): Boolean
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertBriefRepo(repo: RepoBriefLocalDto)
 
-    @Query("DELETE FROM $REPOS_TABLE WHERE repo_name = :repoName")
-    fun deleteRepo(repoName: String)
+    @Query("DELETE FROM $REPOS_TABLE WHERE repo_name = :repoName AND owner = :owner")
+    fun deleteRepo(repoName: String, owner: String)
 }
