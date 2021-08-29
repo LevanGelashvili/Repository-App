@@ -8,12 +8,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.flatrocktech.repositoryapp.clean.domain.model.RepoBriefEntity
-import com.flatrocktech.repositoryapp.clean.presentation.search.SearchAdapter
-import com.flatrocktech.repositoryapp.clean.presentation.search.SearchFragmentDirections
 import com.flatrocktech.repositoryapp.databinding.FragmentStarredBinding
 import com.flatrocktech.repositoryapp.util.Result
-import com.flatrocktech.repositoryapp.util.data
-import com.flatrocktech.repositoryapp.util.ext.displayToast
+import com.flatrocktech.repositoryapp.util.ui.recycler.CustomItemDecoration
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
@@ -51,6 +48,7 @@ class StarredFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.recyclerView.adapter = starredAdapter
+        binding.recyclerView.addItemDecoration(CustomItemDecoration(requireContext()))
 
         viewModel.requestRepositories()
 

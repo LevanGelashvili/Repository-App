@@ -10,6 +10,7 @@ import androidx.navigation.fragment.findNavController
 import com.flatrocktech.repositoryapp.clean.domain.model.RepoBriefEntity
 import com.flatrocktech.repositoryapp.databinding.FragmentSearchBinding
 import com.flatrocktech.repositoryapp.util.Result
+import com.flatrocktech.repositoryapp.util.ui.recycler.CustomItemDecoration
 import com.flatrocktech.repositoryapp.util.ui.recycler.EndlessScrollListener
 import com.flatrocktech.repositoryapp.util.ui.viewmodel.RequestCodes.RC_LOAD_MORE
 import dagger.hilt.android.AndroidEntryPoint
@@ -89,6 +90,7 @@ class SearchFragment : Fragment() {
 
     private fun setupRecyclerView() {
         with(binding.recyclerView) {
+            addItemDecoration(CustomItemDecoration(requireContext()))
             adapter = searchAdapter
             addOnScrollListener(object : EndlessScrollListener() {
                 override fun onLoadMore() {

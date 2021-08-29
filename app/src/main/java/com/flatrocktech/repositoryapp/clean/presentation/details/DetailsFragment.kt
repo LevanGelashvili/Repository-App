@@ -7,6 +7,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.flatrocktech.repositoryapp.R
 import com.flatrocktech.repositoryapp.clean.domain.model.RepoBriefEntity
+import com.flatrocktech.repositoryapp.clean.domain.model.RepoDetailsEntity
 import com.flatrocktech.repositoryapp.clean.domain.usecase.remote.FetchRepoDetailsParams
 import com.flatrocktech.repositoryapp.databinding.FragmentDetailsBinding
 import com.flatrocktech.repositoryapp.util.Result
@@ -22,6 +23,8 @@ class DetailsFragment : Fragment() {
 
     private var _binding: FragmentDetailsBinding? = null
     private val binding get() = _binding!!
+
+    private val detailsAdapter by lazy { DetailsAdapter() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,6 +69,8 @@ class DetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.recyclerView.adapter = detailsAdapter
+
         viewModel.checkIsRepoStarred(
             repoName = args.repoName
         )
@@ -78,7 +83,7 @@ class DetailsFragment : Fragment() {
         viewModel.repoDetailsLiveData.observe(viewLifecycleOwner, {
             when (it) {
                 is Result.Success -> {
-                    displayToast(it.data.toString())
+                    detailsAdapter.submitList(it.data.toDetailsRowModelList())
                 }
                 is Result.Error -> {
 
@@ -118,5 +123,13 @@ class DetailsFragment : Fragment() {
                 }
             }
         })
+    }
+
+    private fun RepoDetailsEntity.toDetailsRowModelList(): MutableList<DetailsRowModel> {
+        return mutableListOf(
+            DetailsRowModel(R.string.title_details_description, this.description),
+            DetailsRowModel(R.string.title_details_created_at, this.createdAt),
+            DetailsRowModel(R.string.title_details_language_used, this.languageUsed)
+        )
     }
 }

@@ -17,8 +17,10 @@
         android:id="@+id/text_repo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/spacing_m"
-        app:layout_constraintBottom_toBottomOf="@id/image_avatar"
+        android:layout_marginStart="@dimen/spacing_l"
+        android:text="repooooo"
+        android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Subtitle"
+        android:textSize="@dimen/item_text_size_large"
         app:layout_constraintStart_toEndOf="@id/image_avatar"
         app:layout_constraintTop_toTopOf="@id/image_avatar" />
 
@@ -26,9 +28,10 @@
         android:id="@+id/text_owner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/spacing_l"
-        app:layout_constraintBottom_toBottomOf="@id/text_repo"
-        app:layout_constraintStart_toEndOf="@id/text_repo"
-        app:layout_constraintTop_toTopOf="@id/text_repo" />
+        android:text="owner chuvaki"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:textSize="@dimen/item_text_size_medium"
+        app:layout_constraintBottom_toBottomOf="@id/image_avatar"
+        app:layout_constraintStart_toStartOf="@id/text_repo" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
