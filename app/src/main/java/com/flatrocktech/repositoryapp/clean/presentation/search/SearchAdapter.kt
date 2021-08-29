@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import com.bumptech.glide.Glide
 import com.flatrocktech.repositoryapp.clean.domain.model.RepoBriefEntity
-import com.flatrocktech.repositoryapp.clean.presentation.search.SearchViewModel.Companion.TAKE_N
+import com.flatrocktech.repositoryapp.clean.domain.usecase.remote.FetchRepoBriefListUseCase.Companion.TAKE_N
 import com.flatrocktech.repositoryapp.databinding.ItemLoadingBinding
 import com.flatrocktech.repositoryapp.databinding.ItemRepoBinding
 import com.flatrocktech.repositoryapp.util.ui.recycler.DefaultItemDiffCallback
@@ -17,6 +17,9 @@ class SearchAdapter :
     ListAdapter<SearchAdapter.SearchListItem, SearchAdapter.SearchItemViewHolder>(
         DefaultItemDiffCallback()
     ), EndlessScrollListener.HasMoreCallback {
+
+    var repoItemCount: Int = 0
+        private set
 
     private val repoItems = mutableListOf<SearchListItem.RepoItem>()
 
@@ -37,6 +40,7 @@ class SearchAdapter :
         if (list.size == TAKE_N) {
             listToDisplay.add(SearchListItem.Loader)
         }
+        repoItemCount = listToDisplay.size
         submitList(listToDisplay)
     }
 
@@ -53,16 +57,12 @@ class SearchAdapter :
         return when (viewType) {
             VIEW_TYPE_REPO_ITEM -> SearchItemViewHolder(
                 ItemRepoBinding.inflate(
-                    LayoutInflater.from(
-                        parent.context
-                    ), parent, false
+                    LayoutInflater.from(parent.context), parent, false
                 )
             )
             VIEW_TYPE_LOADER -> SearchItemViewHolder(
                 ItemLoadingBinding.inflate(
-                    LayoutInflater.from(
-                        parent.context
-                    ), parent, false
+                    LayoutInflater.from(parent.context), parent, false
                 )
             )
             else -> {

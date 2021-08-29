@@ -12,7 +12,6 @@ import com.flatrocktech.repositoryapp.databinding.FragmentSearchBinding
 import com.flatrocktech.repositoryapp.util.Result
 import com.flatrocktech.repositoryapp.util.ui.recycler.CustomItemDecoration
 import com.flatrocktech.repositoryapp.util.ui.recycler.EndlessScrollListener
-import com.flatrocktech.repositoryapp.util.ui.viewmodel.RequestCodes.RC_LOAD_MORE
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -30,6 +29,8 @@ class SearchFragment : Fragment() {
             }
         }
     }
+
+    private var clearPrevious = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -50,22 +51,15 @@ class SearchFragment : Fragment() {
 
         setupSearch()
         setupRecyclerView()
-        setupSwipeRefreshView()
 
         viewModel.reposLiveData.observe(viewLifecycleOwner, {
             when (it) {
                 is Result.Success -> {
-                    binding.swipeRefreshLayout.isRefreshing = false
-                    searchAdapter.addRepoItems(
-                        list = it.data,
-                        clearPrevious = viewModel.lastRequestCode != RC_LOAD_MORE
-                    )
+                    searchAdapter.addRepoItems(it.data, clearPrevious)
                 }
                 is Result.Error -> {
-                    binding.swipeRefreshLayout.isRefreshing = false
                 }
-                is Result.Loading -> {
-                    binding.swipeRefreshLayout.isRefreshing = true
+                Result.Loading -> {
                 }
             }
         })
@@ -84,31 +78,29 @@ class SearchFragment : Fragment() {
 
     private fun setupSearch() {
         binding.buttonSearch.setOnClickListener {
-            viewModel.onSearch(getFilterText())
+            clearPrevious = true
+            getRepos()
         }
     }
 
     private fun setupRecyclerView() {
         with(binding.recyclerView) {
-            addItemDecoration(CustomItemDecoration(requireContext()))
             adapter = searchAdapter
+            addItemDecoration(CustomItemDecoration(requireContext()))
+
             addOnScrollListener(object : EndlessScrollListener() {
                 override fun onLoadMore() {
-                    viewModel.onLoadMore(
-                        filter = getFilterText()
-                    )
+                    clearPrevious = false
+                    getRepos()
                 }
             })
         }
     }
 
-    private fun setupSwipeRefreshView() {
-        binding.swipeRefreshLayout.setOnRefreshListener {
-            viewModel.onRefresh(getFilterText())
-        }
-    }
-
-    private fun getFilterText(): String {
-        return binding.editText.text.toString()
+    private fun getRepos() {
+        viewModel.requestRepositories(
+            filter = binding.editText.text.toString(),
+            loadMore = !clearPrevious
+        )
     }
 }

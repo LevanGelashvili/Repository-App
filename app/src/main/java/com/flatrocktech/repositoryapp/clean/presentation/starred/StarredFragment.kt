@@ -56,10 +56,8 @@ class StarredFragment : Fragment() {
             when (it) {
                 is Result.Success -> {
                     starredAdapter.submitList(it.data)
-                    Timber.d("Here %s", it.data.toString())
                 }
                 is Result.Error -> {
-                    Timber.d("Here %s", it.exception.toString())
                 }
                 Result.Loading -> {
                 }
