@@ -5,16 +5,16 @@ import com.flatrocktech.repositoryapp.clean.domain.repository.RemoteRepoReposito
 import com.flatrocktech.repositoryapp.util.Result
 import javax.inject.Inject
 
-data class FetchRepoDetailsParams(
+data class GetRepoDetailsParams(
     val repoName: String,
     val owner: String
 )
 
-class FetchRepoDetailsUseCase @Inject constructor(
+class GetRepoDetailsUseCase @Inject constructor(
     private val repository: RemoteRepoRepository
 ) {
 
-    suspend operator fun invoke(params: FetchRepoDetailsParams): Result<RepoDetailsEntity> {
+    suspend operator fun invoke(params: GetRepoDetailsParams): Result<RepoDetailsEntity> {
         return repository.getRepoDetails(params)
     }
 }

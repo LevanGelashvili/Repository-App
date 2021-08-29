@@ -18,4 +18,8 @@ class DetailsMenuStateManager(private val context: Context, menu: Menu) {
             field = state
             starItem.icon = ContextCompat.getDrawable(context, state.drawableId)
         }
+
+    fun disableStar() {
+        starItem.isEnabled = false
+    }
 }

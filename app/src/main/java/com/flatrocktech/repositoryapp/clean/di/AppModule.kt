@@ -5,8 +5,8 @@ import androidx.room.Room
 import com.flatrocktech.repositoryapp.clean.data.local.LocalRepoRepositoryImpl
 import com.flatrocktech.repositoryapp.clean.data.local.room.RepoDao
 import com.flatrocktech.repositoryapp.clean.data.local.room.RepoDatabase
+import com.flatrocktech.repositoryapp.clean.data.remote.RemoteRepoRepositoryImpl
 import com.flatrocktech.repositoryapp.clean.data.remote.api.RepoApi
-import com.flatrocktech.repositoryapp.clean.data.remote.repository.RemoteRepoRepositoryImpl
 import com.flatrocktech.repositoryapp.clean.domain.repository.LocalRepoRepository
 import com.flatrocktech.repositoryapp.clean.domain.repository.RemoteRepoRepository
 import dagger.Binds

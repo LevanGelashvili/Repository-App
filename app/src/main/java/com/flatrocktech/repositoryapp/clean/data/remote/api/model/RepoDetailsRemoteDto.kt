@@ -1,4 +1,4 @@
-package com.flatrocktech.repositoryapp.clean.data.remote.model
+package com.flatrocktech.repositoryapp.clean.data.remote.api.model
 
 import com.squareup.moshi.Json
 

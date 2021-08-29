@@ -14,6 +14,6 @@ class DeleteRepoBriefUseCase @Inject constructor(
 ) {
 
     suspend operator fun invoke(params: DeleteRepoBriefParams): Result<Unit> {
-        return repository.deleteBriefRepo(params)
+        return repository.deleteRepoBrief(params)
     }
 }

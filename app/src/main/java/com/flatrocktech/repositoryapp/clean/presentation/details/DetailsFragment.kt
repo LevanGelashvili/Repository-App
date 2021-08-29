@@ -1,6 +1,5 @@
 package com.flatrocktech.repositoryapp.clean.presentation.details
 
-import android.content.Context
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
@@ -14,7 +13,6 @@ import com.flatrocktech.repositoryapp.util.Result
 import com.flatrocktech.repositoryapp.util.ext.displayToast
 import com.flatrocktech.repositoryapp.util.helper.BrowserHelper
 import com.flatrocktech.repositoryapp.util.helper.DateHelper
-import com.flatrocktech.repositoryapp.util.ui.recycler.CustomItemDecoration
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -62,7 +60,10 @@ class DetailsFragment : Fragment() {
         } else {
             when (menuStateManager.starState) {
                 StarState.STARRED -> {
-                    viewModel.unstarRepo(repoName = args.repoName, owner = args.owner)
+                    viewModel.unstarRepo(
+                        repoName = args.repoName,
+                        owner = args.owner
+                    )
                 }
                 StarState.NOT_STARRED -> {
                     viewModel.starRepo(
@@ -93,29 +94,41 @@ class DetailsFragment : Fragment() {
             owner = args.owner
         )
 
+        observeRepoDetails()
+        observeIsStarredResult()
+        observeStarResult()
+        observeUnstarResult()
+    }
+
+    private fun observeRepoDetails() {
         viewModel.repoDetailsLiveData.observe(viewLifecycleOwner, {
             when (it) {
                 is Result.Success -> {
                     detailsAdapter.submitList(it.data.toDetailsRowModelList())
-                    binding.textRepo.text = args.repoName
-                    binding.textOwner.text = getString(R.string.title_details_owner, args.owner)
-                    it.data.url?.let { url ->
-                        binding.buttonShare.isEnabled = true
-                        binding.buttonShare.setOnClickListener {
-                            BrowserHelper.openUrl(requireContext(), url)
-                        }
-                    }
+                    updateDetailHeaders(it.data.url)
                 }
                 is Result.Error -> {
-
-                }
-                Result.Loading -> {
-
+                    displayToast(getString(R.string.error_fetched_details))
                 }
             }
         })
+    }
 
-        viewModel.isRepoStarredLiveData.observe(viewLifecycleOwner, { isStarred ->
+    private fun updateDetailHeaders(url: String?) {
+        with(binding) {
+            textRepo.text = args.repoName
+            textOwner.text = getString(R.string.title_details_owner, args.owner)
+            if (url != null) {
+                buttonShare.isEnabled = true
+                buttonShare.setOnClickListener {
+                    BrowserHelper.openUrl(requireContext(), url)
+                }
+            }
+        }
+    }
+
+    private fun observeIsStarredResult() {
+        viewModel.isRepoStarred.observe(viewLifecycleOwner, { isStarred ->
             when (isStarred) {
                 is Result.Success -> {
                     if (isStarred.data) {
@@ -125,35 +138,36 @@ class DetailsFragment : Fragment() {
                     }
                 }
                 is Result.Error -> {
-                    displayToast("Unable to check if repo is starred")
-                }
-                Result.Loading -> {
+                    displayToast(getString(R.string.error_cached_repo_check_star))
+                    menuStateManager.disableStar()
                 }
             }
         })
+    }
 
-        viewModel.starRepoStatusLiveData.observe(viewLifecycleOwner, {
+    private fun observeStarResult() {
+        viewModel.starRepo.observe(viewLifecycleOwner, {
             when (it) {
                 is Result.Success -> {
                     menuStateManager.starState = StarState.STARRED
                 }
                 is Result.Error -> {
-                    displayToast("Unable to add to favorites")
-                }
-                Result.Loading -> {
+                    displayToast(getString(R.string.error_cached_repo_action_star))
+                    menuStateManager.disableStar()
                 }
             }
         })
+    }
 
-        viewModel.unstarRepoStatusLiveData.observe(viewLifecycleOwner, {
+    private fun observeUnstarResult() {
+        viewModel.unstarRepo.observe(viewLifecycleOwner, {
             when (it) {
                 is Result.Success -> {
                     menuStateManager.starState = StarState.NOT_STARRED
                 }
                 is Result.Error -> {
-                    displayToast("Unable to remove from favorites")
-                }
-                Result.Loading -> {
+                    displayToast(getString(R.string.error_cached_repo_action_unstar))
+                    menuStateManager.disableStar()
                 }
             }
         })

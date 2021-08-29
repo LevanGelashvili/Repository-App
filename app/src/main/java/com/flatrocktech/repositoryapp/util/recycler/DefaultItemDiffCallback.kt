@@ -1,4 +1,4 @@
-package com.flatrocktech.repositoryapp.util.ui.recycler
+package com.flatrocktech.repositoryapp.util.recycler
 
 import android.annotation.SuppressLint
 import androidx.recyclerview.widget.DiffUtil

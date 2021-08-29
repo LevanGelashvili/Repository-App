@@ -7,12 +7,13 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.flatrocktech.repositoryapp.R
 import com.flatrocktech.repositoryapp.clean.domain.model.RepoBriefEntity
 import com.flatrocktech.repositoryapp.databinding.FragmentStarredBinding
 import com.flatrocktech.repositoryapp.util.Result
-import com.flatrocktech.repositoryapp.util.ui.recycler.CustomItemDecoration
+import com.flatrocktech.repositoryapp.util.ext.displayToast
+import com.flatrocktech.repositoryapp.util.recycler.CustomItemDecoration
 import dagger.hilt.android.AndroidEntryPoint
-import timber.log.Timber
 
 @AndroidEntryPoint
 class StarredFragment : Fragment() {
@@ -47,31 +48,31 @@ class StarredFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.recyclerView.adapter = starredAdapter
-        binding.recyclerView.addItemDecoration(CustomItemDecoration(requireContext()))
+        with(binding.recyclerView) {
+            adapter = starredAdapter
+            addItemDecoration(CustomItemDecoration(requireContext()))
+        }
 
         viewModel.requestRepositories()
-
-        viewModel.reposLiveData.observe(viewLifecycleOwner, {
+        viewModel.briefRepos.observe(viewLifecycleOwner, {
             when (it) {
                 is Result.Success -> {
                     starredAdapter.submitList(it.data)
                 }
                 is Result.Error -> {
-                }
-                Result.Loading -> {
+                    displayToast(getString(R.string.error_cached_repo_list))
                 }
             }
         })
     }
 
-    //TODO: Fix !!s and create base class or smth
+
     private fun navigateToDetails(repoBrief: RepoBriefEntity) {
         findNavController().navigate(
             StarredFragmentDirections.actionToDetails(
-                repoBrief.owner!!,
-                repoBrief.repoName!!,
-                repoBrief.avatarUrl!!
+                repoBrief.owner,
+                repoBrief.repoName,
+                repoBrief.avatarUrl
             )
         )
     }

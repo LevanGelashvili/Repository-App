@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.flatrocktech.repositoryapp.clean.domain.model.RepoBriefEntity
 import com.flatrocktech.repositoryapp.clean.domain.usecase.local.ReadRepoBriefListUseCase
 import com.flatrocktech.repositoryapp.util.Result
-import com.flatrocktech.repositoryapp.util.ext.handleLoading
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.collect
@@ -20,20 +19,19 @@ internal class StarredViewModel @Inject constructor(
     private val readRepoBriefListUseCase: ReadRepoBriefListUseCase
 ) : ViewModel() {
 
-    private val reposRequestFlow = MutableSharedFlow<Unit>(extraBufferCapacity = 1)
-    private val _reposLiveData = MutableLiveData<Result<List<RepoBriefEntity>>>()
-    val reposLiveData: LiveData<Result<List<RepoBriefEntity>>> get() = _reposLiveData
+    private val briefReposRequestFlow = MutableSharedFlow<Unit>(extraBufferCapacity = 1)
+    private val _briefRepos = MutableLiveData<Result<List<RepoBriefEntity>>>()
+    val briefRepos: LiveData<Result<List<RepoBriefEntity>>> get() = _briefRepos
 
     init {
         viewModelScope.launch {
-            reposRequestFlow
-                .handleLoading(_reposLiveData)
+            briefReposRequestFlow
                 .map { readRepoBriefListUseCase() }
-                .collect { _reposLiveData.postValue(it) }
+                .collect { _briefRepos.postValue(it) }
         }
     }
 
     fun requestRepositories() {
-        reposRequestFlow.tryEmit(Unit)
+        briefReposRequestFlow.tryEmit(Unit)
     }
 }

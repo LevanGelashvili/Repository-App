@@ -9,6 +9,6 @@ class ReadRepoBriefListUseCase @Inject constructor(
     private val repository: LocalRepoRepository
 ) {
     suspend operator fun invoke(): Result<List<RepoBriefEntity>> {
-        return repository.getBriefRepoList()
+        return repository.getRepoBriefList()
     }
 }

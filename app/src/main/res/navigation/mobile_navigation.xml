@@ -38,6 +38,7 @@
             app:argType="string" />
         <argument
             android:name="avatarUrl"
-            app:argType="string" />
+            app:argType="string"
+            app:nullable="true" />
     </fragment>
 </navigation>

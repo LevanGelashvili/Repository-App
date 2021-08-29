@@ -1,11 +1,11 @@
-package com.flatrocktech.repositoryapp.clean.data.remote.repository
+package com.flatrocktech.repositoryapp.clean.data.remote
 
 import com.flatrocktech.repositoryapp.clean.data.remote.api.RepoApi
 import com.flatrocktech.repositoryapp.clean.domain.model.RepoBriefEntity
 import com.flatrocktech.repositoryapp.clean.domain.model.RepoDetailsEntity
 import com.flatrocktech.repositoryapp.clean.domain.repository.RemoteRepoRepository
-import com.flatrocktech.repositoryapp.clean.domain.usecase.remote.FetchRepoBriefListParams
-import com.flatrocktech.repositoryapp.clean.domain.usecase.remote.FetchRepoDetailsParams
+import com.flatrocktech.repositoryapp.clean.domain.usecase.remote.GetRepoBriefListParams
+import com.flatrocktech.repositoryapp.clean.domain.usecase.remote.GetRepoDetailsParams
 import com.flatrocktech.repositoryapp.clean.mapper.RemoteRepoMapper.toEntity
 import com.flatrocktech.repositoryapp.util.Result
 import com.flatrocktech.repositoryapp.util.di.CoroutinesModule.IoDispatcher
@@ -18,17 +18,19 @@ class RemoteRepoRepositoryImpl @Inject constructor(
     private val api: RepoApi
 ) : RemoteRepoRepository {
 
-    override suspend fun getRepoBriefList(params: FetchRepoBriefListParams): Result<List<RepoBriefEntity>> {
+    override suspend fun getRepoBriefList(params: GetRepoBriefListParams): Result<List<RepoBriefEntity>> {
         return safeApiCall(dispatcher) {
             api.getRepositoryBriefList(
                 userFilter = params.userFilter,
                 page = params.page,
                 perPage = params.perPage
-            ).map { it.toEntity() }
+            ).filter {
+                it.repoName != null && it.owner != null && it.owner.ownerName != null
+            }.map { it.toEntity() }
         }
     }
 
-    override suspend fun getRepoDetails(params: FetchRepoDetailsParams): Result<RepoDetailsEntity> {
+    override suspend fun getRepoDetails(params: GetRepoDetailsParams): Result<RepoDetailsEntity> {
         return safeApiCall(dispatcher) {
             api.getRepositoryDetails(
                 owner = params.owner,

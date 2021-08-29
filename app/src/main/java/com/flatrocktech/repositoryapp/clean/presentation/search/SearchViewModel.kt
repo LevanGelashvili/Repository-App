@@ -5,10 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.flatrocktech.repositoryapp.clean.domain.model.RepoBriefEntity
-import com.flatrocktech.repositoryapp.clean.domain.usecase.remote.FetchRepoBriefListParams
-import com.flatrocktech.repositoryapp.clean.domain.usecase.remote.FetchRepoBriefListUseCase
+import com.flatrocktech.repositoryapp.clean.domain.usecase.remote.GetRepoBriefListUseCase
 import com.flatrocktech.repositoryapp.util.Result
-import com.flatrocktech.repositoryapp.util.ext.handleLoading
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.collect
@@ -18,29 +16,24 @@ import javax.inject.Inject
 
 @HiltViewModel
 internal class SearchViewModel @Inject constructor(
-    private val fetchRepoBriefListUseCase: FetchRepoBriefListUseCase
+    private val getRepoBriefListUseCase: GetRepoBriefListUseCase
 ) : ViewModel() {
 
-    private val reposRequestFlow = MutableSharedFlow<Pair<String, Boolean>>(extraBufferCapacity = 1)
-    private val _reposLiveData = MutableLiveData<Result<List<RepoBriefEntity>>>()
-    val reposLiveData: LiveData<Result<List<RepoBriefEntity>>> get() = _reposLiveData
+    private val briefReposRequestFlow = MutableSharedFlow<Pair<String, Boolean>>(extraBufferCapacity = 1)
+    private val _briefRepos = MutableLiveData<Result<List<RepoBriefEntity>>>()
+    val briefRepos: LiveData<Result<List<RepoBriefEntity>>> get() = _briefRepos
 
     init {
         viewModelScope.launch {
-            reposRequestFlow
-                .handleLoading(_reposLiveData)
+            briefReposRequestFlow
                 .map { (filter, loadMore) ->
-                    fetchRepoBriefListUseCase(filter, loadMore)
+                    getRepoBriefListUseCase(filter, loadMore)
                 }
-                .collect { _reposLiveData.postValue(it) }
+                .collect { _briefRepos.postValue(it) }
         }
     }
 
-    fun isLoading(): Boolean {
-        return _reposLiveData.value is Result.Loading
-    }
-
     fun requestRepositories(filter: String, loadMore: Boolean) {
-        reposRequestFlow.tryEmit(filter to loadMore)
+        briefReposRequestFlow.tryEmit(filter to loadMore)
     }
 }

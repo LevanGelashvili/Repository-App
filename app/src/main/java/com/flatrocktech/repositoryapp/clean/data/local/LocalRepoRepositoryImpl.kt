@@ -4,7 +4,7 @@ import com.flatrocktech.repositoryapp.clean.data.local.room.RepoDao
 import com.flatrocktech.repositoryapp.clean.domain.model.RepoBriefEntity
 import com.flatrocktech.repositoryapp.clean.domain.repository.LocalRepoRepository
 import com.flatrocktech.repositoryapp.clean.domain.usecase.local.DeleteRepoBriefParams
-import com.flatrocktech.repositoryapp.clean.domain.usecase.local.IsRepoStarredParams
+import com.flatrocktech.repositoryapp.clean.domain.usecase.local.IsRepoBriefStarredParams
 import com.flatrocktech.repositoryapp.clean.mapper.LocalRepoMapper.toDto
 import com.flatrocktech.repositoryapp.clean.mapper.LocalRepoMapper.toEntity
 import com.flatrocktech.repositoryapp.util.Result
@@ -18,25 +18,25 @@ class LocalRepoRepositoryImpl @Inject constructor(
     private val dao: RepoDao,
 ) : LocalRepoRepository {
 
-    override suspend fun getBriefRepoList(): Result<List<RepoBriefEntity>> {
+    override suspend fun getRepoBriefList(): Result<List<RepoBriefEntity>> {
         return safeStorageCall(dispatcher) {
-            dao.getBriefRepoList().map { it.toEntity() }
+            dao.getRepoList().map { it.toEntity() }
         }
     }
 
-    override suspend fun isRepoStarred(params: IsRepoStarredParams): Result<Boolean> {
+    override suspend fun isRepoBriefStarred(params: IsRepoBriefStarredParams): Result<Boolean> {
         return safeStorageCall(dispatcher) {
             dao.checkIfRepoExists(repoName = params.repoName)
         }
     }
 
-    override suspend fun insertBriefRepo(entity: RepoBriefEntity): Result<Unit> {
+    override suspend fun insertRepoBrief(entity: RepoBriefEntity): Result<Unit> {
         return safeStorageCall(dispatcher) {
-            dao.insertBriefRepo(repo = entity.toDto())
+            dao.insertRepo(repo = entity.toDto())
         }
     }
 
-    override suspend fun deleteBriefRepo(params: DeleteRepoBriefParams): Result<Unit> {
+    override suspend fun deleteRepoBrief(params: DeleteRepoBriefParams): Result<Unit> {
         return safeStorageCall(dispatcher) {
             dao.deleteRepo(repoName = params.repoName, owner = params.owner)
         }

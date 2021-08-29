@@ -3,16 +3,15 @@ package com.flatrocktech.repositoryapp.clean.domain.usecase.remote
 import com.flatrocktech.repositoryapp.clean.domain.model.RepoBriefEntity
 import com.flatrocktech.repositoryapp.clean.domain.repository.RemoteRepoRepository
 import com.flatrocktech.repositoryapp.util.Result
-import timber.log.Timber
 import javax.inject.Inject
 
-data class FetchRepoBriefListParams(
+data class GetRepoBriefListParams(
     val userFilter: String,
     val page: Int,
     val perPage: Int
 )
 
-class FetchRepoBriefListUseCase @Inject constructor(
+class GetRepoBriefListUseCase @Inject constructor(
     private val repository: RemoteRepoRepository
 ) {
 
@@ -20,7 +19,7 @@ class FetchRepoBriefListUseCase @Inject constructor(
 
     suspend operator fun invoke(filter: String, loadMore: Boolean): Result<List<RepoBriefEntity>> {
         val repoList = repository.getRepoBriefList(
-            FetchRepoBriefListParams(
+            GetRepoBriefListParams(
                 userFilter = filter,
                 page = if (loadMore) currentPage else STARTING_PAGE_INDEX,
                 perPage = TAKE_N

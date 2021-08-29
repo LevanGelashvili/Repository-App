@@ -11,13 +11,13 @@ import com.flatrocktech.repositoryapp.clean.data.local.room.model.RepoBriefLocal
 interface RepoDao {
 
     @Query("SELECT * FROM $REPOS_TABLE")
-    fun getBriefRepoList(): List<RepoBriefLocalDto>
+    fun getRepoList(): List<RepoBriefLocalDto>
 
     @Query("SELECT EXISTS (SELECT * FROM $REPOS_TABLE WHERE repo_name = :repoName)")
     fun checkIfRepoExists(repoName: String): Boolean
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertBriefRepo(repo: RepoBriefLocalDto)
+    fun insertRepo(repo: RepoBriefLocalDto)
 
     @Query("DELETE FROM $REPOS_TABLE WHERE repo_name = :repoName AND owner = :owner")
     fun deleteRepo(repoName: String, owner: String)

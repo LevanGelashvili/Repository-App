@@ -1,4 +1,4 @@
-package com.flatrocktech.repositoryapp.util.ui.recycler
+package com.flatrocktech.repositoryapp.util.recycler
 
 import androidx.recyclerview.widget.RecyclerView
 

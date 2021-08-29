@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.flatrocktech.repositoryapp.databinding.ItemDetailsBinding
 import com.flatrocktech.repositoryapp.util.Constants.CONTENT_NA
-import com.flatrocktech.repositoryapp.util.ui.recycler.DefaultItemDiffCallback
+import com.flatrocktech.repositoryapp.util.recycler.DefaultItemDiffCallback
 
 data class DetailsRowModel(
     val titleId: Int,

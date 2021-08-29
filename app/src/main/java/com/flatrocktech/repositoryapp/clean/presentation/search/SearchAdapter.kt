@@ -3,18 +3,16 @@ package com.flatrocktech.repositoryapp.clean.presentation.search
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
-import androidx.recyclerview.widget.RecyclerView
-import androidx.viewbinding.ViewBinding
-import com.bumptech.glide.Glide
 import com.flatrocktech.repositoryapp.clean.domain.model.RepoBriefEntity
-import com.flatrocktech.repositoryapp.clean.domain.usecase.remote.FetchRepoBriefListUseCase.Companion.TAKE_N
+import com.flatrocktech.repositoryapp.clean.domain.usecase.remote.GetRepoBriefListUseCase.Companion.TAKE_N
+import com.flatrocktech.repositoryapp.clean.presentation.base.RepoItemViewHolder
 import com.flatrocktech.repositoryapp.databinding.ItemLoadingBinding
 import com.flatrocktech.repositoryapp.databinding.ItemRepoBinding
-import com.flatrocktech.repositoryapp.util.ui.recycler.DefaultItemDiffCallback
-import com.flatrocktech.repositoryapp.util.ui.recycler.EndlessScrollListener
+import com.flatrocktech.repositoryapp.util.recycler.DefaultItemDiffCallback
+import com.flatrocktech.repositoryapp.util.recycler.EndlessScrollListener
 
 class SearchAdapter :
-    ListAdapter<SearchAdapter.SearchListItem, SearchAdapter.SearchItemViewHolder>(
+    ListAdapter<SearchAdapter.SearchListItem, RepoItemViewHolder>(
         DefaultItemDiffCallback()
     ), EndlessScrollListener.HasMoreCallback {
 
@@ -53,14 +51,14 @@ class SearchAdapter :
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchItemViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RepoItemViewHolder {
         return when (viewType) {
-            VIEW_TYPE_REPO_ITEM -> SearchItemViewHolder(
+            VIEW_TYPE_REPO_ITEM -> RepoItemViewHolder(
                 ItemRepoBinding.inflate(
                     LayoutInflater.from(parent.context), parent, false
                 )
             )
-            VIEW_TYPE_LOADER -> SearchItemViewHolder(
+            VIEW_TYPE_LOADER -> RepoItemViewHolder(
                 ItemLoadingBinding.inflate(
                     LayoutInflater.from(parent.context), parent, false
                 )
@@ -71,32 +69,11 @@ class SearchAdapter :
         }
     }
 
-    override fun onBindViewHolder(holder: SearchItemViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: RepoItemViewHolder, position: Int) {
         when (val item = getItem(position)) {
-            is SearchListItem.RepoItem -> holder.bindRepo(item.repoBrief)
-            SearchListItem.Loader -> holder.bindLoader()
-        }
-    }
-
-    inner class SearchItemViewHolder(private val binding: ViewBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-
-        fun bindRepo(repo: RepoBriefEntity) {
-            binding.root.setOnClickListener {
-                onRepoItemClicked?.invoke(repo)
+            is SearchListItem.RepoItem -> holder.bindRepo(item.repoBrief, onRepoItemClicked)
+            SearchListItem.Loader -> {
             }
-            with(binding as ItemRepoBinding) {
-                textRepo.text = repo.repoName
-                textOwner.text = repo.owner
-                Glide.with(root)
-                    .load(repo.avatarUrl)
-                    .circleCrop()
-                    .into(binding.imageAvatar)
-            }
-        }
-
-        fun bindLoader() {
-            // Do nothing
         }
     }
 

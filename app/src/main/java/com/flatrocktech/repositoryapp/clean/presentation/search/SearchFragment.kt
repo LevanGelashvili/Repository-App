@@ -7,11 +7,13 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.flatrocktech.repositoryapp.R
 import com.flatrocktech.repositoryapp.clean.domain.model.RepoBriefEntity
 import com.flatrocktech.repositoryapp.databinding.FragmentSearchBinding
 import com.flatrocktech.repositoryapp.util.Result
-import com.flatrocktech.repositoryapp.util.ui.recycler.CustomItemDecoration
-import com.flatrocktech.repositoryapp.util.ui.recycler.EndlessScrollListener
+import com.flatrocktech.repositoryapp.util.ext.displayToast
+import com.flatrocktech.repositoryapp.util.recycler.CustomItemDecoration
+import com.flatrocktech.repositoryapp.util.recycler.EndlessScrollListener
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -49,41 +51,11 @@ class SearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setupSearch()
-        setupRecyclerView()
-
-        viewModel.reposLiveData.observe(viewLifecycleOwner, {
-            when (it) {
-                is Result.Success -> {
-                    searchAdapter.addRepoItems(it.data, clearPrevious)
-                }
-                is Result.Error -> {
-                }
-                Result.Loading -> {
-                }
-            }
-        })
-    }
-
-    //TODO: Fix !!s and create base class or smth
-    private fun navigateToDetails(repoBrief: RepoBriefEntity) {
-        findNavController().navigate(
-            SearchFragmentDirections.actionToDetails(
-                repoBrief.owner!!,
-                repoBrief.repoName!!,
-                repoBrief.avatarUrl!!
-            )
-        )
-    }
-
-    private fun setupSearch() {
         binding.buttonSearch.setOnClickListener {
             clearPrevious = true
             getRepos()
         }
-    }
 
-    private fun setupRecyclerView() {
         with(binding.recyclerView) {
             adapter = searchAdapter
             addItemDecoration(CustomItemDecoration(requireContext()))
@@ -95,6 +67,36 @@ class SearchFragment : Fragment() {
                 }
             })
         }
+
+        viewModel.briefRepos.observe(viewLifecycleOwner, {
+            when (it) {
+                is Result.Success -> {
+                    if (it.data.isEmpty()) {
+                        displayToast(
+                            getString(
+                                R.string.empty_repo_list,
+                                binding.editText.text.toString()
+                            )
+                        )
+                    } else {
+                        searchAdapter.addRepoItems(it.data, clearPrevious)
+                    }
+                }
+                is Result.Error -> {
+                    displayToast(getString(R.string.error_fetched_repo_list))
+                }
+            }
+        })
+    }
+
+    private fun navigateToDetails(repoBrief: RepoBriefEntity) {
+        findNavController().navigate(
+            SearchFragmentDirections.actionToDetails(
+                repoBrief.owner,
+                repoBrief.repoName,
+                repoBrief.avatarUrl
+            )
+        )
     }
 
     private fun getRepos() {

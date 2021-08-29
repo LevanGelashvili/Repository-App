@@ -1,4 +1,4 @@
-package com.flatrocktech.repositoryapp.util.ui.recycler
+package com.flatrocktech.repositoryapp.util.recycler
 
 import android.content.Context
 import android.graphics.Canvas
