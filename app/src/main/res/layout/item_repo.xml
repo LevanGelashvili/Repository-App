@@ -15,13 +15,17 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/text_repo"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/spacing_l"
+        android:layout_marginEnd="@dimen/spacing_3xl"
+        android:ellipsize="end"
         android:maxLines="1"
+        android:textAlignment="textStart"
         android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Subtitle"
         android:textColor="?attr/colorPrimary"
         android:textSize="@dimen/item_text_size_large"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/image_avatar"
         app:layout_constraintTop_toTopOf="@id/image_avatar" />
 

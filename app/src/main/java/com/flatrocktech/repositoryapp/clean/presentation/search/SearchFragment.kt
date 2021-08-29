@@ -71,19 +71,23 @@ class SearchFragment : Fragment() {
         viewModel.briefRepos.observe(viewLifecycleOwner, {
             when (it) {
                 is Result.Success -> {
-                    if (it.data.isEmpty()) {
+                    searchAdapter.addRepoItems(it.data, clearPrevious)
+                    if (it.data.isEmpty() && clearPrevious) {
                         displayToast(
                             getString(
-                                R.string.empty_repo_list,
+                                R.string.empty_fetched_repo_list,
                                 binding.editText.text.toString()
                             )
                         )
-                    } else {
-                        searchAdapter.addRepoItems(it.data, clearPrevious)
                     }
                 }
                 is Result.Error -> {
-                    displayToast(getString(R.string.error_fetched_repo_list))
+                    displayToast(
+                        getString(
+                            R.string.error_fetched_repo_list,
+                            binding.editText.text.toString()
+                        )
+                    )
                 }
             }
         })

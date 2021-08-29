@@ -17,13 +17,13 @@
     <string name="button_share_url">Open in browser</string>
     <string name="hint_search">Search</string>
 
-    <string name="empty_repo_list">Could not find repos with %s</string>
     <string name="error_null_params_to_details">Can\'t open details, api error</string>
-    <string name="error_fetched_repo_list">Error fetching repositories</string>
+    <string name="empty_fetched_repo_list">No repositories of user %s</string>
+    <string name="error_fetched_repo_list">Error fetching repositories of user %s</string>
 
     <string name="error_fetched_details">Can\'t fetch details, api error</string>
     <string name="error_cached_repo_list">Error reading repositories from cache</string>
-    <string name="error_cached_repo_check_star">Can\'t check if repo is starred</string>
-    <string name="error_cached_repo_action_star">Can\'t star repo</string>
-    <string name="error_cached_repo_action_unstar">Can\'t unstar repo</string>
+    <string name="error_cached_repo_check_star">Can\'t check if repository is starred</string>
+    <string name="error_cached_repo_action_star">Can\'t star repository</string>
+    <string name="error_cached_repo_action_unstar">Can\'t unstar repository</string>
 </resources>

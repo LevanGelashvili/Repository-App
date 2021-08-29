@@ -54,6 +54,7 @@ class StarredFragment : Fragment() {
         }
 
         viewModel.requestRepositories()
+
         viewModel.briefRepos.observe(viewLifecycleOwner, {
             when (it) {
                 is Result.Success -> {

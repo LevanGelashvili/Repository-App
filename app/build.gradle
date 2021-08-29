@@ -11,7 +11,7 @@ android {
     buildToolsVersion "30.0.3"
     defaultConfig {
         applicationId "com.flatrocktech.repositoryapp"
-        minSdkVersion 24
+        minSdkVersion 23
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -50,7 +50,6 @@ dependencies {
     implementation "androidx.constraintlayout:constraintlayout:$rootProject.ext.constraint_layout_version"
     implementation "androidx.vectordrawable:vectordrawable:$rootProject.ext.vector_drawable_version"
     implementation "androidx.appcompat:appcompat:$rootProject.ext.appcompat_version"
-    implementation "androidx.swiperefreshlayout:swiperefreshlayout:$rootProject.ext.swipe_refresh_layout_version"
     implementation "com.google.accompanist:accompanist-glide:$rootProject.ext.glide_accompanist_version"
 
     // Navigation

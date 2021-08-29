@@ -2,8 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginStart="@dimen/spacing_m"
-    android:orientation="vertical">
+    android:layout_marginBottom="@dimen/spacing_m"
+    android:background="@drawable/border_item_details"
+    android:orientation="vertical"
+    android:padding="@dimen/spacing_s">
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/text_title"
@@ -11,16 +13,15 @@
         android:layout_height="wrap_content"
         android:textAppearance="@style/TextAppearance.AppCompat.Display3"
         android:textColor="?attr/colorSecondaryVariant"
-        android:textSize="@dimen/item_text_size_medium" />
+        android:textSize="@dimen/item_text_size_small" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/text_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/spacing_2xs"
-        android:layout_marginBottom="@dimen/spacing_xl"
+        android:layout_marginVertical="@dimen/spacing_2xs"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textColor="?attr/colorPrimaryVariant"
-        android:textSize="@dimen/item_text_size_large" />
+        android:textSize="@dimen/item_text_size_medium" />
 
 </LinearLayout>
