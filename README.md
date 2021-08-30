@@ -17,8 +17,7 @@ As usual, get started by cloning the project to your local machine:
 ```
 $ git://github.com/LevanGelashvili/Repository-App.git
 ```
-Simply open and run the project in Android Studio
-Github api requires OAuth token to return unlimited requests, visit RequestInterceptor.kt file for more details about how to provide your own auth Oauth token as an HTTP header.
+Simply open and run the project in Android Studio. Github api requires OAuth token to return unlimited requests, visit RequestInterceptor.kt file for more details about how to provide your own auth Oauth token as an HTTP header.
 
 ### Android Version Targeting
 
