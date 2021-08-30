@@ -16,30 +16,36 @@ class SearchAdapter :
         DefaultItemDiffCallback()
     ), EndlessScrollListener.HasMoreCallback {
 
-    var repoItemCount: Int = 0
-        private set
-
-    private val repoItems = mutableListOf<SearchListItem.RepoItem>()
+    private val repoItems = mutableListOf<RepoBriefEntity>()
 
     var onRepoItemClicked: ((RepoBriefEntity) -> Unit)? = null
 
     fun addRepoItems(
-        list: List<RepoBriefEntity>,
+        responseList: List<RepoBriefEntity>,
         clearPrevious: Boolean = false
     ) {
+        if (duplicateResponse(responseList)) {
+            return
+        }
         val listToDisplay = mutableListOf<SearchListItem>()
         if (clearPrevious) {
             repoItems.clear()
         }
 
-        repoItems.addAll(list.map { SearchListItem.RepoItem(it) })
-        listToDisplay.addAll(repoItems)
+        repoItems.addAll(responseList)
+        listToDisplay.addAll(repoItems.map { SearchListItem.RepoItem(it) })
 
-        if (list.size == TAKE_N) {
+        if (responseList.size == TAKE_N) {
             listToDisplay.add(SearchListItem.Loader)
         }
-        repoItemCount = listToDisplay.size
         submitList(listToDisplay)
+    }
+
+    private fun duplicateResponse(list: List<RepoBriefEntity>): Boolean {
+        if (list.isEmpty() || repoItems.isEmpty()) {
+            return false
+        }
+        return repoItems.contains(list.first())
     }
 
     override fun hasMore() = true

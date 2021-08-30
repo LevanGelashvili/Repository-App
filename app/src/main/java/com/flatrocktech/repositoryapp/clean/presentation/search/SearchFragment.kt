@@ -82,6 +82,7 @@ class SearchFragment : Fragment() {
                     }
                 }
                 is Result.Error -> {
+                    searchAdapter.addRepoItems(listOf(), clearPrevious = true)
                     displayToast(
                         getString(
                             R.string.error_fetched_repo_list,
