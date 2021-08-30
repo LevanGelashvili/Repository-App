@@ -12,7 +12,7 @@ Repo App is an simple Android application, which can fetch info about github rep
 As usual, get started by cloning the project to your local machine:
 
 ```
-$ git@github.com:LevanGelashvili/Repository-App.git
+$ git://github.com/LevanGelashvili/Repository-App.git
 ```
 Simply open and run the project in Android Studio
 
