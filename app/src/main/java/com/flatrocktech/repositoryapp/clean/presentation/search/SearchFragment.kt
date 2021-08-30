@@ -52,8 +52,10 @@ class SearchFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.buttonSearch.setOnClickListener {
-            clearPrevious = true
-            getRepos()
+            if (getFilterText().isNotBlank()) {
+                clearPrevious = true
+                getRepos()
+            }
         }
 
         with(binding.recyclerView) {
@@ -76,7 +78,7 @@ class SearchFragment : Fragment() {
                         displayToast(
                             getString(
                                 R.string.empty_fetched_repo_list,
-                                binding.editText.text.toString()
+                                getFilterText()
                             )
                         )
                     }
@@ -86,7 +88,7 @@ class SearchFragment : Fragment() {
                     displayToast(
                         getString(
                             R.string.error_fetched_repo_list,
-                            binding.editText.text.toString()
+                            getFilterText()
                         )
                     )
                 }
@@ -106,8 +108,12 @@ class SearchFragment : Fragment() {
 
     private fun getRepos() {
         viewModel.requestRepositories(
-            filter = binding.editText.text.toString(),
+            filter = getFilterText(),
             loadMore = !clearPrevious
         )
+    }
+
+    private fun getFilterText(): String {
+        return binding.editText.text.toString()
     }
 }
